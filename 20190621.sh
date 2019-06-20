@@ -1,7 +1,10 @@
 a="\e[32m";b="\e[0m";c="\e[31m";d="\e[20m";
+today=`date +%Y%m%d`
+nowtime=`date +%T`
 echo "########################################"
 echo -e "${c}此為Export匯出練習 & Import 匯入練習${b}"
 echo -e "${c}          By chuchu 20190621${b}"
+echo -e "${c}          ${today}  ${nowtime}${b}"
 echo "########################################"
 var=`expr $var + 1`;num=`expr $num + 1`;
 mysql -uroot -pqweqwe -e 'show databases' | grep -o dbei 1>/dev/null
