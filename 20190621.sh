@@ -1,6 +1,6 @@
 a="\e[32m";b="\e[0m";c="\e[31m";d="\e[20m";
 echo "########################################"
-echo -e "${c}此為Exprot匯出練習 & Import 匯入練習${b}"
+echo -e "${c}此為Export匯出練習 & Import 匯入練習${b}"
 echo -e "${c}          By chuchu 20190621${b}"
 echo "########################################"
 var=`expr $var + 1`;num=`expr $num + 1`;
