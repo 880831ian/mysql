@@ -1,0 +1,145 @@
+a="\e[32m";b="\e[0m";c="\e[31m";d="\e[20m";
+today=`date +%Y%m%d`
+nowtime=`date +%T`
+echo "########################################"
+echo -e "${c}此為Export匯出練習 & Import 匯入練習${b}"
+echo -e "${c}          By chuchu 20190621${b}"
+echo -e "${c}          ${today}  ${nowtime}${b}"
+echo "########################################"
+var=`expr $var + 1`;num=`expr $num + 1`;
+mysql -uroot -p123qwe -e 'show databases' | grep -o dbei 1>/dev/null
+if [ "$?" = "1" ];then
+mysqladmin -uroot -p123qwe create dbei
+else
+echo -e "${a}dbei 已存在${b}"
+fi
+if [ "$?" = "0" ];then
+echo -e "${num}_create dbei:                [${a}Success${b}]"
+else
+echo -e "${num}_create dbei:                [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+mysql -uroot -p123qwe -e 'use dbei;show columns from exim' >/dev/null 2>&1
+if [ "$?" = "1" ];then
+mysql -uroot -p123qwe -e 'use dbei;create table exim(id int, title varchar(40) not null)'
+else
+echo -e "${a}dbei.exim 已存在${b}"
+fi
+if [ "$?" = "0" ];then
+echo -e "${num}_create exim:                [${a}Success${b}]"
+else
+echo -e "${num}_create exim:                [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+mysql -uroot -p123qwe -e 'use dbei;select *from exim' | grep -o "eximx" >/dev/null 2>&1
+if [ "$?" = "1" ];then
+mysql -uroot -p123qwe -e "use dbei;insert into exim(title)values('eximx')"
+else
+echo -e "${a}dbei.exim.eximx 已存在${b}"
+fi
+if [ "$?" = "0" ];then
+echo -e "${num}_create eximx:               [${a}Success${b}]"
+else
+echo -e "${num}_create eximx:               [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+mysql -uroot -p123qwe -e 'use dbei;select *from exim' | grep -o "eximy" >/dev/null 2>&1
+if [ "$?" = "1" ];then
+mysql -uroot -p123qwe -e "use dbei;insert into exim(title)values('eximy')"
+else
+echo -e "${a}dbei.exim.eximy 已存在${b}"
+fi
+if [ "$?" = "0" ];then
+echo -e "${num}_create eximy:               [${a}Success${b}]"
+else
+echo -e "${num}_create eximy:               [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+if [ -e "/tmp/exim-0.txt" ];then
+echo -e "${a}/tmp/exim-0.txt 已存在${b}"
+else
+mysql -uroot -p123qwe -e "use dbei;select * from exim into outfile  '/tmp/exim-0.txt' fields terminated by '<>' enclosed by '!' lines terminated by '\r\n'"
+fi
+if [ "$?" = "0" ];then
+echo -e "${num}_select:                     [${a}Success${b}]"
+else
+echo -e "${num}_select:                     [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;/tmp/dbeieximdump.txt
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+if [ -e "/tmp/dbeieximdump.txt" ];then
+echo -e "${a}/tmp/dbeieximdump.txt 已存在${b}"
+else
+mysqldump -uroot -p123qwe dbei exim > /tmp/dbeieximdump.txt
+fi
+if [ "$?" = "0" ];then
+echo -e "${num}_Raw Data:                   [${a}Success${b}]"
+else
+echo -e "${num}_Raw Data:                   [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+if [ -e "/tmp/dbeidump.sql" ];then
+echo -e "${a}/tmp/dbeidump.sql 已存在${b}"
+else
+mysqldump -uroot -p123qwe dbei > /tmp/dbeidump.sql
+fi
+if [ "$?" = "0" ];then
+echo -e "${num}_sql_1:                      [${a}Success${b}]"
+else
+echo -e "${num}_sql_1:                      [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+echo "########################################"
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+mysqldump -uroot -p123qwe --tab=/tmp dbei exim
+if [ "$?" = "0" ];then
+echo -e "${num}_tab:                        [${a}Success${b}]"
+else
+echo -e "${num}_tab:                        [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+if [ -e "/tmp/dbeieximdump.sql" ];then
+echo -e "${a}/tmp/dbeieximdump.sql 已存在${b}"
+else
+mysqldump -uroot -p123qwe dbei exim > /tmp/dbeieximdump.sql
+fi
+if [ "$?" = "0" ];then
+echo -e "${num}_sql_exim:                   [${a}Success${b}]"
+else
+echo -e "${num}_sql_exim:                   [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+if [ -e "/tmp/dbeidump1.sql" ];then
+echo -e "${a}/tmp/dbeidump1.sql 已存在${b}"
+else
+mysqldump -uroot -p123qwe dbei  > /tmp/dbeidump1.sql
+fi
+if [ "$?" = "0" ];then
+echo -e "${num}_sql_2:                     [${a}Success${b}]"
+else
+echo -e "${num}_sql_2:                     [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
